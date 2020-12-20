@@ -43,7 +43,7 @@ def main():
         device, uuid, major, minor, power))
 
     try:
-        sock = bluez.hci_open_dev(device[-1])
+        sock = bluez.hci_open_dev(int(device[-1]))
         print("Open device sccuess")
     except:
         print("Error accessing bluetooth")
