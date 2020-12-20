@@ -45,6 +45,7 @@ def main():
     device = data['device']
     interval = data['interval']
 
+    init_Bluetooth(device)
     timer = threading.Timer(interval=interval, function=send_iBeacon(
         device, uuid, major, minor, power))
 
