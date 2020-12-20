@@ -44,6 +44,7 @@ def main():
 
     try:
         sock = bluez.hci_open_dev(device[-1])
+        print("Open device sccuess")
     except:
         print("Error accessing bluetooth")
         return
@@ -51,6 +52,8 @@ def main():
     try:
         ScanUtility.hci_enable_le_scan(sock)
         record = open("record.txt", "a")
+        print("\n *** Looking for BLE Beacons ***\n")
+        print("\n *** CTRL-C to Cancel ***\n")
         while True:
             result = ScanUtility.parse_events(sock, 10)
             print(result)
@@ -69,6 +72,7 @@ def main():
                 macAddress = result['macAddress']
                 info = f"{current_time}/{macAddress}/{distance}/{custMajor}/{custMinor}"
                 record.writelines(info)
+                print("Write into")
 
     except KeyboardInterrupt:
         record.close()
