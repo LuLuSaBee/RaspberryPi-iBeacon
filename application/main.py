@@ -9,18 +9,24 @@ ScanUtility = SourceFileLoader(
     "ScanUtility", '../scan/ScanUtility.py').load_module()
 
 
-def send_iBeacon(device: str, uuid: str, major: str, minor: str, power: str):
+def init_Bluetooth(device: str):
     try:
         print("Bluetooth-Startup")
         os.system(f"sudo hciconfig {device} up")
         print("iBeacon-Setting")
         os.system(f"sudo hciconfig {device} noleadv")
+    except:
+        print("Init Bluetooth Failed")
+
+
+def send_iBeacon(device: str, uuid: str, major: str, minor: str, power: str):
+    try:
         os.system(
             f"sudo hcitool -i {device} cmd 0x08 0x0008 1e 02 01 1a 1a ff 4c 00 02 15 {uuid} {major} {minor} {power}")
-        os.system(f"sudo hciconfig {device} leadv 0")
+        os.system(f"sudo hciconfig {device} leadv")
         print("iBeacon is working")
     except:
-        print("send iBeacon Error")
+        print("Send iBeacon Error")
 
 
 def switchMode(device: str):
