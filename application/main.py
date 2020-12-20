@@ -56,9 +56,11 @@ def main():
         print("\n *** CTRL-C to Cancel ***\n")
         while True:
             result = ScanUtility.parse_events(sock, 10)
-            print(result)
 
-            if result['uuid'] == "07":
+            if result == "":
+                continue
+
+            if result['uuid'] == "07 48 52 36 d4 5a 6b 7c 55 32 12":
                 record.close()
                 timer.cancel()
                 print("Switch to connect phone")
@@ -70,9 +72,9 @@ def main():
                 custMinor = result['minor']
                 distance = result['distance']
                 macAddress = result['macAddress']
-                info = f"{current_time}/{macAddress}/{distance}/{custMajor}/{custMinor}"
+                info = f"{current_time}/{macAddress}/{distance}/{custMajor}/{custMinor}\n"
                 record.writelines(info)
-                print("Write into")
+                print("Write " + str(result))
 
     except KeyboardInterrupt:
         record.close()
