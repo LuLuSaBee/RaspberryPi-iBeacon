@@ -16,9 +16,7 @@ ScanUtility.hci_enable_le_scan(sock)
 # Scans for iBeacons
 try:
     while True:
-        returnedList = ScanUtility.parse_events(sock, 10)
-        for item in returnedList:
-            print(item)
-            print("")
+        result = ScanUtility.parse_events(sock, 10)
+        print(result)
 except KeyboardInterrupt:
     pass
