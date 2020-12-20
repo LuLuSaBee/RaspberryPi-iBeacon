@@ -2,6 +2,8 @@ import json
 import os
 import bluetooth._bluetooth as bluez
 from datetime import datetime
+import RPi.GPIO as GPIO
+import time
 
 from importlib.machinery import SourceFileLoader
 ScanUtility = SourceFileLoader(
@@ -43,9 +45,17 @@ def main():
     power = data['power']
     device = data['device']
     interval = data['interval']
+    PIN = data['PIN']
 
     init_Bluetooth(device)
     send_iBeacon(device, uuid, major, minor, power)
+
+    try:
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(PIN, GPIO.OUT)
+    except:
+        print("Can't find \"Vibration motor\"")
+        PIN = -1
 
     try:
         sock = bluez.hci_open_dev(int(device[-1]))
@@ -65,25 +75,32 @@ def main():
             if result == "":
                 continue
 
+            distance = result['distance']
+
             if result['uuid'] == "07 48 52 36 d4 5a 6b 7c 55 32 12":
                 record.close()
-                timer.cancel()
                 print("Switch to connect phone")
                 switchMode(device)
                 return
-            elif result['distance'] <= 2.0:
+            elif distance <= 2.0:
+                if PIN >= 1 and distance <= 1.5:
+                    GPIO.output(PIN, GPIO.HIGH)
+                    print("Vibration")
+                    time.sleep(2)
+                    GPIO.output(PIN, GPIO.LOW)
+                    time.sleep(1)
                 current_time = datetime.now().strftime("%Y-%m-%d/%H:%M:%S")
                 custMajor = result['major']
                 custMinor = result['minor']
-                distance = result['distance']
                 macAddress = result['macAddress']
                 info = f"{current_time}/{macAddress}/{distance}/{custMajor}/{custMinor}\n"
                 record.writelines(info)
-                print("Write " + str(result))
+                print("Write " + str(info))
 
     except KeyboardInterrupt:
         record.close()
         os.system(f"sudo hciconfig {device} noleadv")
+        GPIO.cleanup()
         print("Stop Service")
         pass
 

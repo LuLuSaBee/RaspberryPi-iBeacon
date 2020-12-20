@@ -4,5 +4,6 @@
     "major": "00 00",
     "minor": "00 00",
     "power": "c9",
-    "interval": 3
+    "interval": 3,
+    "PIN": 2
 }
