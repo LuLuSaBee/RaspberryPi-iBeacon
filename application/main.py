@@ -1,4 +1,3 @@
-import threading
 import json
 import os
 import bluetooth._bluetooth as bluez
@@ -46,8 +45,7 @@ def main():
     interval = data['interval']
 
     init_Bluetooth(device)
-    timer = threading.Timer(interval=interval, function=send_iBeacon(
-        device, uuid, major, minor, power))
+    send_iBeacon(device, uuid, major, minor, power)
 
     try:
         sock = bluez.hci_open_dev(int(device[-1]))
@@ -85,7 +83,6 @@ def main():
 
     except KeyboardInterrupt:
         record.close()
-        timer.cancel()
         os.system(f"sudo hciconfig {device} noleadv")
         print("Stop Service")
         pass
