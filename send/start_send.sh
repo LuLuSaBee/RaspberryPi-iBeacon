@@ -1,5 +1,5 @@
 #!/bin/sh
-. ./ibeacon.conf
+. /home/pi/RaspberryPi-iBeacon/send/ibeacon.conf
 echo "[Bluetooth-Startup Bluetooth]"
 sudo hciconfig $BLUETOOTH_DEVICE up
 echo "[iBeacon-Setting iBeacon]"

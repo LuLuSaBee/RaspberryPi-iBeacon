@@ -1,8 +1,8 @@
 {
     "device": "hci0",
     "uuid": "EC 09 2F 7C C3 A3 7B 2E B6 47 E5 BE 44 D7 5D D8",
-    "major": "00 00",
-    "minor": "00 00",
+    "major": "ff 4f",
+    "minor": "12 63",
     "power": "c9",
     "interval": 3
 }
